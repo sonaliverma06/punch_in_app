@@ -13,7 +13,8 @@ export default function Attendance() {
   const [show, setShow] = useState(false);
   const [punchtime, setpunchtime] = useState([]);
   const [getuser1, setgetuser1] = useState([]);
-
+  const [holi,setholi] =useState([]);
+  // console.log("holi",holi);
 
   const getpunchindata = () => {
     axios.get(`http://localhost:4800/user/${use}`).then(function (response) {
@@ -25,6 +26,19 @@ export default function Attendance() {
   useEffect(() => {
     getpunchindata();
   }, []);
+
+const getholidayData = ()=>{
+  axios.get("http://localhost:4800/holidays").then(function (response) {
+    console.log("response", response);
+    setholi(response.data.data)
+
+  });
+};
+
+  useEffect (()=>{
+    getholidayData()
+
+  },[])
 
   const handleShow = (item) => {
     // console.log(item);
@@ -51,6 +65,7 @@ export default function Attendance() {
           </tr>
         </thead>
         <tbody>
+          {/* {holi.map ((item)=>{return(<li>{item.date}</li>)})} */}
           {punchtime &&
             punchtime.map((item) => {
               let item1 = item?.attendance
@@ -124,9 +139,12 @@ export default function Attendance() {
               return (
                 <tr>
                   <td>{item.date}</td>
+                  
                   {/* <td>{effectiveHours}</td> */}
                   <td>{grossHours}</td>
                   <td>{totalBreak}</td>
+                  {/* <td>{holi.date}</td> */}
+
                   
                   <td>
                     <button
@@ -144,13 +162,15 @@ export default function Attendance() {
         </tbody>
         <Modal show={show} onHide={() => handleClose()} animation={false}>
           <Modal.Body>
+            <div className="mbody"> 
             {getuser1 &&
               getuser1.map((item, index) => (
-                <div>
-                  {index % 2 == 0 ? "Punch In" : "Punch Out"}
-                  {item}
+                <div className="tab">
+                 <div className="index">{index % 2 == 0 ? "Punch In -": "Punch Out -"}</div>
+                  <div className="item">{item}</div>
                 </div>
               ))}
+              </div>
           </Modal.Body>
           <Modal.Footer>
             <button variant="secondary" onClick={handleClose}>

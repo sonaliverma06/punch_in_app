@@ -5,7 +5,7 @@ const saltRounds = 10;
 const jwt = require("jsonwebtoken");
 const db = require("../database");
 const pool = db();
-
+const cron = require('node-cron');
 // router.put("/user/:id", async (req, res) => {
 //   const ids = req.params.id;
 //   const { username, contact, address, city } = req.body;
@@ -160,6 +160,9 @@ console.log("body12345", req.body);
         message: "Failed to connect",
       });
     }
+    // cron.schedule('* * * * * *',function() {
+      // console.log(new Date());
+      // });
     connection.query(
       "INSERT INTO assingshift(shiftid,user) VALUES(?,?)",
       [shiftid,user],
@@ -323,9 +326,13 @@ router.get("/user/:id", async (req, res) => {
         message: "Fail to connect",
       });
     }
+    //  cron.schedule('* * * * * *',function() {
+    //   console.log(new Date());
+    //   });
     connection.query(
       `SELECT date, GROUP_CONCAT(punchin) as 'attendance' FROM attendance WHERE user_id=${ids} group by date`,
-
+      
+  
       [ids],
       (error, response) => {
         connection.release();
@@ -341,13 +348,15 @@ router.get("/user/:id", async (req, res) => {
         }
       }
     );
+  
   });
 });
 
 router.post("/punchatten/:id", async (req, res) => {
   const user_id = req.params.id;
-  console.log("body", req.body);
+  // console.log("body", req.body);
   const data = req.body;
+  // console.log("data111111",data);
   const { punchin, date } = data;
   await pool.getConnection((err, connection) => {
     if (err) {
@@ -357,6 +366,7 @@ router.post("/punchatten/:id", async (req, res) => {
     }
     const finddata = `SELECT * FROM attendance WHERE user_id=${user_id}`;
     connection.query(finddata, (error, response) => {
+      console.log("error","response",error,response);
       if (error) {
         return res.status(500).json({
           message: "error in fetching data",
