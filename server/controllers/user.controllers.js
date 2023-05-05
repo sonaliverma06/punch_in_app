@@ -146,6 +146,10 @@ router.post("/login", async (req, res) => {
   });
 });
 
+  // cron.schedule('* * * * * *',function() {
+      // console.log(new Date());
+      // });
+
 router.post("/assishift/:id", async (req, res) => {
     // const id = req.params.id;
     // console.log("ID", id);
@@ -160,9 +164,7 @@ console.log("body12345", req.body);
         message: "Failed to connect",
       });
     }
-    // cron.schedule('* * * * * *',function() {
-      // console.log(new Date());
-      // });
+   
     connection.query(
       "INSERT INTO assingshift(shiftid,user) VALUES(?,?)",
       [shiftid,user],

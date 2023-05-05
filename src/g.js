@@ -296,7 +296,8 @@ router.post("/punchatten", async (req, res) => {
               });
             }
           });
-        } else {
+        } 
+        else {
           connection.query(
             "INSERT INTO attendance(punchin, date, signup_user_id) VALUES(?,?,?)",
             [JSON.stringify(punchin), date, signup_user_id],

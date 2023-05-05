@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 export default function Viewshift() {
   const [usershift, setusershift] = useState([]);
   const { id } = useParams();
+  console.log("id",id);
   const [values, setvalues] = useState([]);
   const [assig, setassign] = useState({
     shiftid: "",
@@ -25,7 +26,7 @@ export default function Viewshift() {
     axios
       .post(`http://localhost:4800/assishift/${id}`, {assig})
       .then((response) => {
-        // console.log("response", response.data.data);
+        console.log("response", response.data.data);
         setassign(response.data);
       });
   };

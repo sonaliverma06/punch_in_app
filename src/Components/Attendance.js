@@ -29,7 +29,14 @@ export default function Attendance() {
 
 const getholidayData = ()=>{
   axios.get("http://localhost:4800/holidays").then(function (response) {
-    console.log("response", response);
+    // console.log("response", response);
+    // const a = moment(new Date()).format('YYYY-MM-DD')
+  
+    // const b = response.data.data.filter((item)=>item.date === a )
+    // return(
+    //   setholi(b)
+    // )
+    // console.log("item",item);
     setholi(response.data.data)
 
   });
@@ -50,7 +57,8 @@ const getholidayData = ()=>{
         .split("   ")
     );
   };
- 
+  // let date = moment(new Date()).format('YYYY-MM-DD')
+  // console.log("date",date);
 
   return (
     <div>
@@ -62,12 +70,14 @@ const getholidayData = ()=>{
             {/* <th>Gross Hours</th> */}
             <th>Total Break</th>
             <th>Log</th>
+
+            <th>holiday</th>
           </tr>
         </thead>
         <tbody>
-          {/* {holi.map ((item)=>{return(<li>{item.date}</li>)})} */}
-          {punchtime &&
+         {punchtime &&
             punchtime.map((item) => {
+              console.log("item",item);
               let item1 = item?.attendance
                 .replaceAll(/[/[","]|]/g, " ")
                 .trim()
@@ -138,14 +148,11 @@ const getholidayData = ()=>{
 
               return (
                 <tr>
-                  <td>{item.date}</td>
-                  
-                  {/* <td>{effectiveHours}</td> */}
+                 <td>{item.date}</td>
+                 
+                 {/* <td>{effectiveHours}</td> */}
                   <td>{grossHours}</td>
                   <td>{totalBreak}</td>
-                  {/* <td>{holi.date}</td> */}
-
-                  
                   <td>
                     <button
                       className="bg bg-info"
@@ -156,9 +163,13 @@ const getholidayData = ()=>{
                       View Details
                     </button>
                   </td>
+                  <td> 
+                  {holi.map((e) => e.date).find((e) => e === moment(new Date()).format('YYYY-MM-DD'))}
+                 </td>
                 </tr>
               );
             })}
+             
         </tbody>
         <Modal show={show} onHide={() => handleClose()} animation={false}>
           <Modal.Body>
